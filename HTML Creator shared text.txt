@@ -1,0 +1,561 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тӯй Таклифномаси</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #faf6ef;
+      --ivory: #f5ede0;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --deep: #2c1a0e;
+      --brown: #5c3d2e;
+      --rose: #c9706a;
+      --muted: #8a7060;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--deep);
+      font-family: 'Cormorant Garamond', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ───── Noise texture overlay ───── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 999;
+    }
+
+    /* ───── Page ───── */
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ───── Hero ───── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 60px 20px;
+    }
+
+    .hero-border {
+      position: absolute; inset: 20px;
+      border: 1px solid rgba(201,168,76,0.35);
+      pointer-events: none;
+    }
+    .hero-border::before, .hero-border::after {
+      content: '';
+      position: absolute;
+      width: 30px; height: 30px;
+      border-color: var(--gold);
+      border-style: solid;
+    }
+    .hero-border::before { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .hero-border::after  { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+    .floral-top {
+      font-size: 2.8rem;
+      color: var(--gold);
+      opacity: 0.7;
+      margin-bottom: 8px;
+      animation: fadeDown 1.2s ease both;
+    }
+
+    .invite-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      animation: fadeDown 1.2s 0.15s ease both;
+    }
+
+    .couple {
+      animation: fadeDown 1.2s 0.3s ease both;
+    }
+
+    .name {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(3rem, 9vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      color: var(--deep);
+      display: block;
+    }
+
+    .ampersand {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: var(--gold);
+      display: block;
+      margin: 4px 0;
+      font-style: italic;
+    }
+
+    .divider {
+      width: 80px; height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 32px auto;
+      animation: fadeIn 1.2s 0.5s ease both;
+    }
+
+    .tagline {
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--brown);
+      line-height: 1.7;
+      max-width: 380px;
+      animation: fadeIn 1.2s 0.6s ease both;
+    }
+
+    .date-badge {
+      margin-top: 36px;
+      animation: fadeUp 1.2s 0.75s ease both;
+    }
+    .date-badge .day {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.5rem, 7vw, 4rem);
+      font-weight: 600;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .date-badge .month-year {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .scroll-hint {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      animation: fadeIn 2s 1.5s ease both;
+      cursor: pointer;
+    }
+    .scroll-hint span {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-family: 'Cinzel', serif;
+    }
+    .scroll-arrow {
+      width: 20px; height: 20px;
+      border-right: 1px solid var(--gold);
+      border-bottom: 1px solid var(--gold);
+      transform: rotate(45deg);
+      animation: bounce 1.8s infinite;
+    }
+
+    /* ───── Sections ───── */
+    .section {
+      padding: 64px 0;
+      text-align: center;
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .section.visible { opacity: 1; transform: translateY(0); }
+
+    .section-ornament {
+      font-size: 1.6rem; color: var(--gold); opacity: 0.6;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .detail-card {
+      background: var(--ivory);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 2px;
+      padding: 36px 40px;
+      position: relative;
+    }
+    .detail-card::before {
+      content: '';
+      position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px;
+      border: 1px solid rgba(201,168,76,0.12);
+      pointer-events: none;
+    }
+
+    .detail-item { margin: 20px 0; }
+    .detail-icon { font-size: 1.4rem; color: var(--gold); margin-bottom: 6px; }
+    .detail-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .detail-value {
+      font-size: 1.4rem;
+      color: var(--deep);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .detail-sep {
+      width: 50px; height: 1px;
+      background: rgba(201,168,76,0.3);
+      margin: 20px auto;
+    }
+
+    /* ───── Love story timeline ───── */
+    .timeline { text-align: left; position: relative; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 16px; top: 8px; bottom: 8px;
+      width: 1px; background: rgba(201,168,76,0.3);
+    }
+    .tl-item {
+      display: flex; gap: 28px;
+      margin-bottom: 36px;
+      padding-left: 8px;
+    }
+    .tl-dot {
+      width: 18px; height: 18px; min-width: 18px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      margin-top: 4px;
+      background: var(--cream);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tl-dot::after {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--gold); border-radius: 50%;
+    }
+    .tl-year {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      color: var(--gold); margin-bottom: 4px;
+    }
+    .tl-text { font-size: 1.1rem; color: var(--brown); line-height: 1.6; font-style: italic; }
+
+    /* ───── RSVP ───── */
+    .rsvp-wrap { max-width: 480px; margin: 0 auto; }
+
+    .form-group { margin-bottom: 20px; text-align: left; }
+    .form-label {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem; letter-spacing: 0.2em;
+      color: var(--muted); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--ivory);
+      border: 1px solid rgba(201,168,76,0.35);
+      color: var(--deep);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      outline: none;
+      transition: border-color 0.3s;
+      appearance: none;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--gold);
+    }
+    .form-input::placeholder { color: var(--muted); opacity: 0.7; }
+
+    .btn-rsvp {
+      width: 100%; padding: 15px;
+      background: var(--deep);
+      color: var(--gold-light);
+      border: none;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem; letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      margin-top: 8px;
+    }
+    .btn-rsvp:hover { background: var(--gold); color: var(--deep); }
+
+    .rsvp-success {
+      display: none;
+      text-align: center; padding: 36px;
+      background: var(--ivory);
+      border: 1px solid rgba(201,168,76,0.3);
+    }
+    .rsvp-success .tick { font-size: 2.5rem; color: var(--gold); margin-bottom: 12px; }
+    .rsvp-success p { font-style: italic; font-size: 1.2rem; color: var(--brown); }
+
+    /* ───── Countdown ───── */
+    .countdown {
+      display: flex; justify-content: center; gap: 32px;
+      flex-wrap: wrap;
+    }
+    .cd-item { text-align: center; }
+    .cd-num {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 6vw, 3rem);
+      color: var(--gold); line-height: 1;
+    }
+    .cd-label {
+      font-size: 0.65rem; letter-spacing: 0.2em;
+      color: var(--muted); text-transform: uppercase;
+      font-family: 'Cinzel', serif; margin-top: 4px;
+    }
+
+    /* ───── Footer ───── */
+    .footer {
+      border-top: 1px solid rgba(201,168,76,0.2);
+      padding: 48px 0;
+      text-align: center;
+    }
+    .footer-floral { font-size: 2rem; color: var(--gold); opacity: 0.5; }
+    .footer-text {
+      font-style: italic; font-size: 1rem;
+      color: var(--muted); margin-top: 16px; line-height: 1.8;
+    }
+
+    /* ───── Animations ───── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(6px); }
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .detail-card { padding: 28px 20px; }
+      .countdown { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-border"></div>
+
+  <div class="floral-top">✦ ✦ ✦</div>
+
+  <p class="invite-label">Тӯй таклифномаси</p>
+
+  <div class="couple">
+    <span class="name">Акбар</span>
+    <span class="ampersand">&amp;</span>
+    <span class="name">Нилуфар</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="tagline">
+    Бизнинг муҳаббат тарихимизда янги боб бошланмоқда —<br>
+    сизни ушбу бахтли кунга таклиф этамиз.
+  </p>
+
+  <div class="date-badge">
+    <div class="day">15</div>
+    <div class="month-year">Июнь · 2025</div>
+  </div>
+
+  <div class="scroll-hint" onclick="document.getElementById('details').scrollIntoView({behavior:'smooth'})">
+    <span>Пастга</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ══ MAIN PAGE ══ -->
+<main class="page">
+
+  <!-- Маълумотлар -->
+  <section id="details" class="section">
+    <div class="section-ornament">✦</div>
+    <p class="section-title">Тадбир маълумотлари</p>
+    <div class="detail-card">
+      <div class="detail-item">
+        <div class="detail-icon">📅</div>
+        <div class="detail-label">Сана</div>
+        <div class="detail-value">15 Июнь, 2025 · Якшанба</div>
+      </div>
+      <div class="detail-sep"></div>
+      <div class="detail-item">
+        <div class="detail-icon">🕐</div>
+        <div class="detail-label">Вақт</div>
+        <div class="detail-value">Соат 14:00 дан бошлаб</div>
+      </div>
+      <div class="detail-sep"></div>
+      <div class="detail-item">
+        <div class="detail-icon">📍</div>
+        <div class="detail-label">Манзил</div>
+        <div class="detail-value">«Navbahor» тӯй саройи<br>Тошкент шаҳри, Чилонзор тумани</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Санаш -->
+  <section class="section">
+    <div class="section-ornament">✦</div>
+    <p class="section-title">Тӯйга қолди</p>
+    <div class="countdown" id="countdown">
+      <div class="cd-item"><div class="cd-num" id="cd-d">--</div><div class="cd-label">Кун</div></div>
+      <div class="cd-item"><div class="cd-num" id="cd-h">--</div><div class="cd-label">Соат</div></div>
+      <div class="cd-item"><div class="cd-num" id="cd-m">--</div><div class="cd-label">Дақиқа</div></div>
+      <div class="cd-item"><div class="cd-num" id="cd-s">--</div><div class="cd-label">Сония</div></div>
+    </div>
+  </section>
+
+  <!-- Муҳаббат тарихи -->
+  <section class="section">
+    <div class="section-ornament">✦</div>
+    <p class="section-title">Бизнинг тарихимиз</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div>
+          <div class="tl-year">2021</div>
+          <div class="tl-text">Биринчи учрашувимиз — университет йўлагида, тасодифан.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div>
+          <div class="tl-year">2022</div>
+          <div class="tl-text">Биринчи саёҳатимиз — Самарқандга, кун ботишида.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div>
+          <div class="tl-year">2023</div>
+          <div class="tl-text">Унинг қӯлидаги гулни кӯриб, юрагим тушиб кетди.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div>
+          <div class="tl-year">2025</div>
+          <div class="tl-text">Бугун биз умр бӯйи бирга бӯлишга қарор қилдик.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section class="section">
+    <div class="section-ornament">✦</div>
+    <p class="section-title">Жавоб беринг</p>
+
+    <div class="rsvp-wrap">
+      <div id="rsvp-form">
+        <div class="form-group">
+          <label class="form-label">Исм Шарифингиз</label>
+          <input type="text" class="form-input" id="rsvp-name" placeholder="Масалан: Sardor Rahimov" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Телефон рақамингиз</label>
+          <input type="tel" class="form-input" id="rsvp-phone" placeholder="+998 90 123 45 67" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Борасизми?</label>
+          <select class="form-select" id="rsvp-attend">
+            <option value="">Танланг...</option>
+            <option value="yes">Ҳа, албатта бораман ✓</option>
+            <option value="maybe">Эҳтимол бораман</option>
+            <option value="no">Афсуски, бора олмайман</option>
+          </select>
+        </div>
+        <button class="btn-rsvp" onclick="submitRSVP()">Жавоб Юборish</button>
+      </div>
+
+      <div class="rsvp-success" id="rsvp-success">
+        <div class="tick">✦</div>
+        <p>Жавобингиз учун раҳмат!<br>Сизни кутамиз.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer page">
+  <div class="footer-floral">✦ ✦ ✦</div>
+  <p class="footer-text">
+    Сизнинг иштирокингиз бу кунни янада ёрқин қилади.<br>
+    Меҳр ва саломат бӯлинг.
+  </p>
+</footer>
+
+<script>
+  // ── Countdown ──
+  const weddingDate = new Date('2025-06-15T14:00:00');
+  function tick() {
+    const now = new Date();
+    const diff = weddingDate - now;
+    if (diff <= 0) {
+      document.getElementById('countdown').innerHTML = '<p style="font-style:italic;color:var(--gold);font-size:1.4rem">Бугун тӯй куни! 🎉</p>';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+  }
+  tick(); setInterval(tick, 1000);
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.section').forEach(s => observer.observe(s));
+
+  // ── RSVP ──
+  function submitRSVP() {
+    const name = document.getElementById('rsvp-name').value.trim();
+    const attend = document.getElementById('rsvp-attend').value;
+    if (!name || !attend) { alert('Илтимос, барча майдонларни тӯлдиринг.'); return; }
+    document.getElementById('rsvp-form').style.display = 'none';
+    const s = document.getElementById('rsvp-success');
+    s.style.display = 'block';
+    if (attend === 'yes') s.querySelector('p').innerHTML = `Раҳмат, <em>${name}</em>!<br>Сизни кутиб қоламиз. 🌸`;
+    else if (attend === 'maybe') s.querySelector('p').innerHTML = `Тушунамиз, <em>${name}</em>.<br>Имконингиз бўлса, кутамиз!`;
+    else s.querySelector('p').innerHTML = `Афсусланамиз, <em>${name}</em>.<br>Яхши тилакларингизни олдик. 💛`;
+  }
+</script>
+</body>
+</html>
